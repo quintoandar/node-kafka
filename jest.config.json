@@ -1,0 +1,17 @@
+{
+  "collectCoverageFrom": [
+      "**/*.{js}",
+      "!coverage/**/*"
+  ],
+  "coverageThreshold": {
+      "global": {
+          "statements": 8,
+          "branches": 1,
+          "functions": 1,
+          "lines": 6
+      }
+  },
+  "testRegex": "tests/.*\\.test\\.js$",
+  "resetModules": true,
+  "clearMocks": true
+}
