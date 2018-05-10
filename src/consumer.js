@@ -1,4 +1,5 @@
 const kafka = require('kafka-node');
+const logger = require('quintoandar-logger').getLogger(module);
 const _ = require('lodash');
 
 class KafkaConsumer {
@@ -29,6 +30,26 @@ class KafkaConsumer {
     if (this.topics && this.topics.constructor !== Array) {
       throw new Error('Topics must be an array');
     }
+  }
+
+  init() {
+    this.consumer = new kafka.ConsumerGroupStream(this.configs, this.topics);
+
+    this.consumer.on('error', (err) => {
+      logger.error(err);
+      process.exit(1);
+    });
+
+    this.consumer.on('LeaderNotAvailable', () => {
+      logger.error('LeaderNotAvailable');
+    });
+
+    this.consumer.on('data', (msg) => {
+      this.handleMessageFn(msg).then(() => {
+        this.consumer.commit(msg, true);
+      });
+    });
+    logger.info('ConsumerGroupStream started');
   }
 }
 

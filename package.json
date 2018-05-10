@@ -5,9 +5,11 @@
   "main": "src/main.js",
   "dependencies": {
     "kafka-node": "^2.6.1",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0"
   },
   "devDependencies": {
+    "EventEmitter": "^1.0.0",
     "eslint": "^4.7.2",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "2.8.0",

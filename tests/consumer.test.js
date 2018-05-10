@@ -44,21 +44,63 @@ describe('Kafka Consumer Configs Validation', () => {
 
 
 describe('Kafka Consumer', () => {
-  const handleMessageFn = jest.fn().mockImplementation();
+  const handleMessageFn = jest.fn().mockImplementation(() => {
+    return new Promise((resolve) => {
+      resolve();
+    });
+  });
+
   const configs = {
-    kafkaHost: 'localhost:9092', groupId: 'test'
+    kafkaHost: 'localhost:9092',
+    groupId: 'test'
   };
 
+  const fullConfigs = {
+    kafkaHost: 'localhost:9092',
+    groupId: 'test',
+    autoCommit: false,
+    sessionTimeout: 15000,
+    protocol: ['roundrobin'],
+    asyncPush: false,
+    fromOffset: 'latest',
+    outOfRangeOffset: 'latest',
+    fetchMaxBytes: 1024 * 1024
+  };
+
+  const topics = ['Test'];
+
+  it('should configure corretly kafka-node lib', (done) => {
+    const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
+    consumer.init();
+    expect(consumer.configs).toEqual(fullConfigs);
+    expect(consumer.topics).toEqual(topics);
+    done();
+  });
+
   it('should call handle function on new message', (done) => {
-    new KafkaConsumer({ configs, topics: ['Test'], handleMessageFn });
+    const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
+    consumer.init();
+    consumer.consumer.emit('data', 'Event');
+    expect(handleMessageFn).toBeCalledWith('Event');
     done();
   });
 
-  it('should exit on error event', (done) => {
-    done();
+  it('should call commit offset after handling new msg', (done) => {
+    const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
+    consumer.init();
+    consumer.consumer.finishCallback = () => {
+      expect(consumer.consumer.commit).toBeCalledWith('Event', true);
+      done();
+    };
+    consumer.consumer.emit('data', 'Event');
   });
 
-  it('should exit on close event', (done) => {
+  it('should throw error on error event', (done) => {
+    const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
+    global.process.exit = jest.fn();
+    consumer.init();
+    consumer.consumer.emit('error', 'error');
+    expect(global.process.exit).toHaveBeenCalledWith(1);
     done();
   });
 });
