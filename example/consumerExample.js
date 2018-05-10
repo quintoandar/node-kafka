@@ -1,8 +1,8 @@
 const KafkaConsumer = require('../src/consumer').KafkaConsumer;
 
 const configs = {
-  kafkaHost: 'localhost:19092,localhost:29092,localhost:39092',
-  groupId: 'test',
+  'metadata.broker.list': 'localhost:19092,localhost:29092,localhost:39092',
+  'group.id': 'test1',
 };
 
 const topics = ['TestTopic'];

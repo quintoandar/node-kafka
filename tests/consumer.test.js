@@ -1,18 +1,18 @@
-jest.mock('kafka-node');
+jest.mock('node-rdkafka');
 const KafkaConsumer = require('../src/consumer').KafkaConsumer;
 
 describe('Kafka Consumer Configs Validation', () => {
   it('should throw error when consumer group is missing', (done) => {
     expect(() => {
-      new KafkaConsumer({ configs: { kafkaHost: 'localhost:9092' }, topics: [], handleMessageFn: () => { } });
-    }).toThrow('groupId');
+      new KafkaConsumer({ configs: { 'metadata.broker.list': 'localhost:9092' }, topics: [], handleMessageFn: () => { } });
+    }).toThrow('group.id');
     done();
   });
 
   it('should throw error when kafka host is missing', (done) => {
     expect(() => {
-      new KafkaConsumer({ configs: { groupId: 'test' }, topics: [], handleMessageFn: () => { } });
-    }).toThrow('kafkaHost');
+      new KafkaConsumer({ configs: { 'group.id': 'test' }, topics: [], handleMessageFn: () => { } });
+    }).toThrow('metadata.broker.list');
     done();
   });
 
@@ -20,7 +20,7 @@ describe('Kafka Consumer Configs Validation', () => {
     expect(() => {
       new KafkaConsumer({
         configs: {
-          kafkaHost: 'localhost:9092', groupId: 'test',
+          'metadata.broker.list': 'localhost:9092', 'group.id': 'test',
         },
         topics: 'test',
         handleMessageFn: () => { }
@@ -33,7 +33,7 @@ describe('Kafka Consumer Configs Validation', () => {
     expect(() => {
       new KafkaConsumer({
         configs: {
-          kafkaHost: 'localhost:9092', groupId: 'test',
+          'metadata.broker.list': 'localhost:9092', 'group.id': 'test',
         },
         topics: []
       });
@@ -51,29 +51,26 @@ describe('Kafka Consumer', () => {
   });
 
   const configs = {
-    kafkaHost: 'localhost:9092',
-    groupId: 'test'
+    'metadata.broker.list': 'localhost:9092',
+    'group.id': 'test'
   };
 
   const fullConfigs = {
-    kafkaHost: 'localhost:9092',
-    groupId: 'test',
-    autoCommit: false,
-    sessionTimeout: 15000,
-    protocol: ['roundrobin'],
-    asyncPush: false,
-    fromOffset: 'latest',
-    outOfRangeOffset: 'latest',
-    fetchMaxBytes: 1024 * 1024
+    'metadata.broker.list': 'localhost:9092',
+    'group.id': 'test',
+    'session.timeout.ms': 15000,
+    'auto.offset.reset': 'latest',
+    'log.connection.close': false,
   };
 
   const topics = ['Test'];
 
-  it('should configure corretly kafka-node lib', (done) => {
+  it('should configure corretly kafka lib', (done) => {
     const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
     consumer.init();
     expect(consumer.configs).toEqual(fullConfigs);
     expect(consumer.topics).toEqual(topics);
+    expect(consumer.consumer.connect).toHaveBeenCalled();
     done();
   });
 
@@ -89,7 +86,7 @@ describe('Kafka Consumer', () => {
     const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
     consumer.init();
     consumer.consumer.finishCallback = () => {
-      expect(consumer.consumer.commit).toBeCalledWith('Event', true);
+      expect(consumer.consumer.commitMessage).toBeCalledWith('Event');
       done();
     };
     consumer.consumer.emit('data', 'Event');

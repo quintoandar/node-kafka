@@ -1,14 +1,15 @@
 const EventEmitter = require('events').EventEmitter;
 
-class ConsumerGroupStream extends EventEmitter {
+class KafkaConsumer extends EventEmitter {
   constructor(configs, topics) {
     super();
     this.configs = configs;
     this.topics = topics;
-    this.commit = jest.fn().mockImplementation(() => {
+    this.commitMessage = jest.fn().mockImplementation(() => {
       this.finishCallback();
     });
+    this.connect = jest.fn();
   }
 }
 
-module.exports = { ConsumerGroupStream };
+module.exports = { KafkaConsumer };

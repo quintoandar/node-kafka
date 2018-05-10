@@ -1,4 +1,4 @@
-const kafka = require('kafka-node');
+const kafka = require('node-rdkafka');
 const logger = require('quintoandar-logger').getLogger(module);
 const _ = require('lodash');
 
@@ -7,18 +7,14 @@ class KafkaConsumer {
     this.configs = configs;
     this.topics = topics;
     this.handleMessageFn = handleMessageFn;
+    this.configs['log.connection.close'] = false;
     this.validateConfigs();
-    this.configs.autoCommit = false;
-    _.defaults(this.configs, { sessionTimeout: 15000 });
-    _.defaults(this.configs, { protocol: ['roundrobin'] });
-    _.defaults(this.configs, { asyncPush: false });
-    _.defaults(this.configs, { fromOffset: 'latest' });
-    _.defaults(this.configs, { outOfRangeOffset: 'latest' });
-    _.defaults(this.configs, { fetchMaxBytes: 1024 * 1024 });
+    _.defaults(this.configs, { 'session.timeout.ms': 15000 });
+    _.defaults(this.configs, { 'auto.offset.reset': 'latest' });
   }
 
   validateConfigs() {
-    const expectedConfigs = ['kafkaHost', 'groupId'];
+    const expectedConfigs = ['metadata.broker.list', 'group.id'];
     const missingConfigs = _.filter(expectedConfigs, expectedConf =>
       !Object.prototype.hasOwnProperty.call(this.configs, expectedConf));
     if (missingConfigs.length > 0) {
@@ -33,23 +29,25 @@ class KafkaConsumer {
   }
 
   init() {
-    this.consumer = new kafka.ConsumerGroupStream(this.configs, this.topics);
+    this.consumer = new kafka.KafkaConsumer(this.configs, this.topics);
 
-    this.consumer.on('error', (err) => {
-      logger.error(err);
-      process.exit(1);
+    this.consumer.connect();
+    this.consumer.on('ready', () => {
+      this.consumer.subscribe(this.topics);
+      this.consumer.consume();
+      logger.info('Consumer started');
     });
 
-    this.consumer.on('LeaderNotAvailable', () => {
-      logger.error('LeaderNotAvailable');
+    this.consumer.on('error', (error) => {
+      logger.error('Kafka Consumer Error', error);
+      process.exit(1);
     });
 
     this.consumer.on('data', (msg) => {
       this.handleMessageFn(msg).then(() => {
-        this.consumer.commit(msg, true);
+        this.consumer.commitMessage(msg);
       });
     });
-    logger.info('ConsumerGroupStream started');
   }
 }
 

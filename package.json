@@ -4,8 +4,8 @@
   "description": "Default Kafka NodeJS lib for QuintoAndar",
   "main": "src/main.js",
   "dependencies": {
-    "kafka-node": "^2.6.1",
     "lodash": "^4.17.10",
+    "node-rdkafka": "^2.3.2",
     "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0"
   },
   "devDependencies": {
