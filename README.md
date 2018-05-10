@@ -14,8 +14,10 @@ Standard node consumer/producer implementation for QuintoAndar.
 - Is resilient to cluster node failures.
 - The handleMessageFn is exepected to return a promisse. The promisse should be resolved after the message is processed, this will trigger the offset commit in Kafka.
 
-## Consumer Example
+## Examples
+
+See [exemples folder](/example)
 
 ## Configuration
 
-Checkout (node-kafka repo)[https://github.com/SOHU-Co/kafka-node] for configuration info.
+Checkout (node-rdkafka repo)[https://github.com/Blizzard/node-rdkafka/] for configuration info.
