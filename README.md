@@ -1,10 +1,13 @@
 # Node Kafka
 
+[![Build Status](https://travis-ci.org/quintoandar/node-kafka.svg?branch=master)](https://travis-ci.org/quintoandar/node-kafka)
+[![NPM](https://nodei.co/npm/quintoandar-kafka.png)](https://nodei.co/npm/quintoandar-kafka/)
+<!--[![NPM](https://nodei.co/npm-dl/quintoandar-kafka.png?height=3)](https://nodei.co/npm/quintoandar-kafka/)-->
+
+
 Standard node consumer/producer implementation for QuintoAndar.
 
 ## Install
-
-## Use
 
 ## Consumer Caracteristics
 

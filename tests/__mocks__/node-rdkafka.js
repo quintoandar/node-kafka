@@ -12,4 +12,19 @@ class KafkaConsumer extends EventEmitter {
   }
 }
 
-module.exports = { KafkaConsumer };
+class KafkaProducer extends EventEmitter {
+  constructor(configs) {
+    super();
+    this.configs = configs;
+    this.producer = jest.fn();
+    this.write = jest.fn().mockReturnValue(true);
+  }
+}
+
+const Producer = {
+  createWriteStream(configs, topic) {
+    return new KafkaProducer({ configs, topic });
+  }
+};
+
+module.exports = { KafkaConsumer, Producer };

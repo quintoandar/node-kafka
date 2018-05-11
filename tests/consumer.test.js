@@ -61,6 +61,7 @@ describe('Kafka Consumer', () => {
     'session.timeout.ms': 15000,
     'auto.offset.reset': 'latest',
     'log.connection.close': false,
+    'enable.auto.commit': false,
   };
 
   const topics = ['Test'];
@@ -92,7 +93,7 @@ describe('Kafka Consumer', () => {
     consumer.consumer.emit('data', 'Event');
   });
 
-  it('should throw error on error event', (done) => {
+  it('should exit on error event', (done) => {
     const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
     global.process.exit = jest.fn();
     consumer.init();

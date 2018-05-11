@@ -7,8 +7,9 @@ class KafkaConsumer {
     this.configs = configs;
     this.topics = topics;
     this.handleMessageFn = handleMessageFn;
-    this.configs['log.connection.close'] = false;
     this.validateConfigs();
+    this.configs['enable.auto.commit'] = false;
+    _.defaults(this.configs, { 'log.connection.close': false });
     _.defaults(this.configs, { 'session.timeout.ms': 15000 });
     _.defaults(this.configs, { 'auto.offset.reset': 'latest' });
   }
