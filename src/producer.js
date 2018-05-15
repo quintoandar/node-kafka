@@ -28,7 +28,7 @@ class KafkaProducer {
   }
 
   init() {
-    this.producer = new kafka.Producer(this.configs);
+    this.producer = new kafka.Producer(this.configs, { 'request.required.acks': 1 });
     this.producer.connect();
     this.readyPromisse = new Promise((resolve) => {
       if (this.ready) {
@@ -44,6 +44,7 @@ class KafkaProducer {
       logger.error(err);
     });
     this.producer.on('delivery-report', (err, report) => {
+      logger.debug(report);
       const promise = this.sentPromisses[report.opaque];
       delete this.sentPromisses[report.opaque];
       if (err) {
@@ -51,6 +52,7 @@ class KafkaProducer {
       }
       promise.resolve(promise.msg);
     });
+    this.producer.on('event.log', logger.info);
   }
 
   send(msg) {
@@ -60,6 +62,9 @@ class KafkaProducer {
       this.readyPromisse.then(() => {
         try {
           this.producer.produce(this.topic, null, Buffer.from(msg), undefined, undefined, uuid);
+          setImmediate(() => {
+            this.producer.poll();
+          });
         } catch (e) {
           delete this.sentPromisses[uuid];
           reject(e);

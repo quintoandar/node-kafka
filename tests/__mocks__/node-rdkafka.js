@@ -18,6 +18,7 @@ class Producer extends EventEmitter {
     this.configs = configs;
     this.produce = jest.fn();
     this.connect = jest.fn();
+    this.poll = jest.fn();
   }
 }
 

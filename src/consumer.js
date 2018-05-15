@@ -38,7 +38,6 @@ class KafkaConsumer {
       this.consumer.consume();
       logger.info('Consumer started');
     });
-
     this.consumer.on('error', (error) => {
       logger.error('Kafka Consumer Error', error);
       process.exit(1);

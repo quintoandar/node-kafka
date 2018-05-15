@@ -9,7 +9,7 @@ const producer = new KafkaProducer({ configs, topic: 'TestTopic' });
 
 let i = 0;
 function sendMsg() {
-  producer.send(`test${i}`).then((msg) => { console.log(`Sent: ${msg}`); }).catch(err => console.error(`producer err: ${err}`));
+  producer.send(`test${i}`).then((msg) => { console.info(`Sent: ${msg}`); }).catch(err => console.error(`producer err: ${err}`));
   i += 1;
 }
-setInterval(sendMsg, 10000);
+setInterval(sendMsg, 1000);

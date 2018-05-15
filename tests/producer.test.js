@@ -58,6 +58,25 @@ describe('Kafka Producer', () => {
     producer.producer.emit('delivery-report', null, { opaque: uuid });
   });
 
+  it('should call poll after producing', (done) => {
+    const producer = new KafkaProducer({ configs, topic });
+    producer.producer.poll = jest.fn().mockImplementation(() => {
+      done();
+    });
+    producer.send(msg).then(() => {
+      expect(producer.producer.produce).toBeCalledWith(
+        topic,
+        null,
+        Buffer.from(msg),
+        undefined,
+        undefined,
+        uuid,
+      );
+    });
+    producer.producer.emit('ready');
+    producer.producer.emit('delivery-report', null, { opaque: uuid });
+  });
+
   it('should produce if already ready', (done) => {
     const producer = new KafkaProducer({ configs, topic });
     producer.producer.emit('ready');
