@@ -9,6 +9,7 @@ const topics = ['TestTopic'];
 
 function handleMessageFn(msg) {
   return new Promise((resolve) => {
+    msg.value = msg.value.toString('utf8');
     console.log(msg);
     resolve();
   });

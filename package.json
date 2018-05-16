@@ -6,7 +6,8 @@
   "dependencies": {
     "lodash": "^4.17.10",
     "node-rdkafka": "^2.3.2",
-    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0"
+    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "EventEmitter": "^1.0.0",
