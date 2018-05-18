@@ -9,7 +9,7 @@ class KafkaConsumer {
     this.handleMessageFn = handleMessageFn;
     this.validateConfigs();
     this.configs.autoCommit = false;
-    _.defaults(this.configs, { sessionTimeout: 15000 });
+    _.defaults(this.configs, { sessionTimeout: 30000 });
     _.defaults(this.configs, { protocol: ['roundrobin'] });
     _.defaults(this.configs, { asyncPush: false });
     _.defaults(this.configs, { fromOffset: 'latest' });
@@ -44,7 +44,22 @@ class KafkaConsumer {
         this.consumer.commit(msg, true);
       });
     });
+    setInterval(this.refreshMetadata.bind(this), this.sessionTimeout);
     logger.info('ConsumerGroupStream started');
+  }
+
+  refreshMetadata() {
+    this.consumer.consumerGroup.client.refreshMetadata(
+      this.consumer.consumerGroup.topics,
+      (err) => {
+        if (err && err.name === 'BrokerNotAvailableError') {
+          logger.warn(err);
+          this.consumer.close(() => {
+            this.init();
+          });
+        }
+      }
+    );
   }
 }
 
