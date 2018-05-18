@@ -78,8 +78,8 @@ describe('Kafka Consumer', () => {
   it('should call handle function on new message', (done) => {
     const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
     consumer.init();
-    consumer.consumer.emit('data', 'Event');
-    expect(handleMessageFn).toBeCalledWith('Event');
+    consumer.consumer.emit('data', { value: Buffer.from('Event') });
+    expect(handleMessageFn).toBeCalledWith({ value: 'Event' });
     done();
   });
 
@@ -87,10 +87,10 @@ describe('Kafka Consumer', () => {
     const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
     consumer.init();
     consumer.consumer.finishCallback = () => {
-      expect(consumer.consumer.commitMessage).toBeCalledWith('Event');
+      expect(consumer.consumer.commitMessage).toBeCalledWith({ value: 'Event' });
       done();
     };
-    consumer.consumer.emit('data', 'Event');
+    consumer.consumer.emit('data', { value: Buffer.from('Event') });
   });
 
   it('should exit on error event', (done) => {
