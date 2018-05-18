@@ -44,6 +44,7 @@ class KafkaConsumer {
     });
 
     this.consumer.on('data', (msg) => {
+      msg.value = msg.value.toString('utf8');
       this.handleMessageFn(msg).then(() => {
         this.consumer.commitMessage(msg);
       });
