@@ -25,7 +25,8 @@ class KafkaProducer {
 
   init() {
     this.client = new kafka.KafkaClient(this.configs);
-    this.producer = new kafka.Producer(this.client, this.configs);
+    this.producer = new kafka.HighLevelProducer(this.client, this.configs);
+    this.producer.on('error', logger.error);
     this.readyPromisse = new Promise((resolve) => {
       if (this.ready) {
         resolve();

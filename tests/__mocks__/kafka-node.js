@@ -11,4 +11,21 @@ class ConsumerGroupStream extends EventEmitter {
   }
 }
 
-module.exports = { ConsumerGroupStream };
+class HighLevelProducer extends EventEmitter {
+  constructor(client, configs) {
+    super();
+    this.configs = configs;
+    this.client = client;
+    this.send = jest.fn().mockImplementation((payload, cb) => {
+      cb(null, payload[0]);
+    });
+  }
+}
+
+class KafkaClient {
+  constructor(configs) {
+    this.configs = configs;
+  }
+}
+
+module.exports = { ConsumerGroupStream, HighLevelProducer, KafkaClient };
