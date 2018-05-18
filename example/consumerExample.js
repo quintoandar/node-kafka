@@ -9,6 +9,7 @@ const topics = ['TestTopic'];
 
 function handleMessageFn(msg) {
   return new Promise((resolve) => {
+    console.log(new Date().toISOString());
     console.log(msg);
     resolve();
   });

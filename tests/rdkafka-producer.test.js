@@ -1,6 +1,6 @@
 jest.mock('node-rdkafka');
 jest.mock('uuid');
-const KafkaProducer = require('../src/producer').KafkaProducer;
+const KafkaProducer = require('../src/rdkafka-producer').KafkaProducer;
 
 const msg = 'test';
 const uuid = 'a1';
