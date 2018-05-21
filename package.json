@@ -6,7 +6,6 @@
   "dependencies": {
     "kafka-node": "git+https://github.com/thspinto/kafka-node.git#v2.6.2-rc1",
     "lodash": "^4.17.10",
-    "node-rdkafka": "^2.3.2",
     "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0",
     "uuid": "^3.2.1"
   },
