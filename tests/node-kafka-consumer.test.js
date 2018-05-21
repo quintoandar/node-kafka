@@ -154,9 +154,9 @@ describe('Refresh metadata', () => {
     consumer.consumer.close = jest.fn().mockImplementation((cb) => {
       cb();
     });
-    consumer.consumer.name = 'original-consumer';
+    global.process.exit = jest.fn();
     consumer.refreshMetadata();
-    expect(consumer.consumer.name).toBe(undefined);
+    expect(global.process.exit).toHaveBeenCalledWith(1);
     done();
   });
 });

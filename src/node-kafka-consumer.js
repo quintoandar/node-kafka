@@ -35,7 +35,7 @@ class KafkaConsumer {
   init() {
     this.consumer = new kafka.ConsumerGroupStream(this.configs, this.topics);
     this.consumer.on('error', (err) => {
-      logger.error(err);
+      logger.error('node-kafka error: ', err);
       process.exit(1);
     });
 
@@ -52,11 +52,13 @@ class KafkaConsumer {
     this.consumer.consumerGroup.client.refreshMetadata(
       this.consumer.consumerGroup.topics,
       (err) => {
-        if (err && err.name === 'BrokerNotAvailableError') {
-          logger.warn(err);
-          this.consumer.close(() => {
-            this.init();
-          });
+        if (err) {
+          logger.warn('Refresh metadata error: ', err);
+          if (err.name === 'BrokerNotAvailableError') {
+            this.consumer.close(() => {
+              process.exit(1);
+            });
+          }
         }
       }
     );
