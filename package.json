@@ -1,6 +1,6 @@
 {
   "name": "quintoandar-kafka",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Default Kafka NodeJS lib for QuintoAndar",
   "main": "src/main.js",
   "dependencies": {

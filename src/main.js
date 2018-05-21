@@ -1,2 +1,2 @@
 exports.KafkaConsumer = require('./node-kafka-consumer.js').KafkaConsumer;
-exports.KafkaProducer = require('./rdkafka-producer').KafkaProducer;
+exports.KafkaProducer = require('./node-kafka-producer').KafkaProducer;
