@@ -1,16 +1,5 @@
 const EventEmitter = require('events').EventEmitter;
 
-class ConsumerGroupStream extends EventEmitter {
-  constructor(configs, topics) {
-    super();
-    this.configs = configs;
-    this.topics = topics;
-    this.commit = jest.fn().mockImplementation(() => {
-      this.finishCallback();
-    });
-  }
-}
-
 class HighLevelProducer extends EventEmitter {
   constructor(client, configs) {
     super();
@@ -28,4 +17,29 @@ class KafkaClient {
   }
 }
 
-module.exports = { ConsumerGroupStream, HighLevelProducer, KafkaClient };
+class ConsumerGroupStream extends EventEmitter {
+  constructor(configs, topics) {
+    super();
+    this.configs = configs;
+    this.topics = topics;
+    this.commit = jest.fn().mockImplementation(() => {
+      this.finishCallback();
+    });
+    this.consumerGroup = new HighLevelProducer(new KafkaClient(configs), configs);
+    this.close = jest.fn();
+  }
+}
+
+class BrokerNotAvailableError extends Error {
+  constructor() {
+    super();
+    this.name = 'BrokerNotAvailableError';
+  }
+}
+
+module.exports = {
+  ConsumerGroupStream,
+  HighLevelProducer,
+  KafkaClient,
+  BrokerNotAvailableError,
+};
