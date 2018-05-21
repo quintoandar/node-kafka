@@ -1,15 +1,15 @@
-const KafkaConsumer = require('../src/consumer').KafkaConsumer;
+const KafkaConsumer = require('../src/main').KafkaConsumer;
 
 const configs = {
-  'metadata.broker.list': 'localhost:19092,localhost:29092,localhost:39092',
-  'group.id': 'test1',
+  kafkaHost: 'localhost:19092,localhost:29092,localhost:39092',
+  groupId: 'test',
 };
 
 const topics = ['TestTopic'];
 
 function handleMessageFn(msg) {
   return new Promise((resolve) => {
-    msg.value = msg.value.toString('utf8');
+    console.log(new Date().toISOString());
     console.log(msg);
     resolve();
   });
