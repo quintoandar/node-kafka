@@ -15,6 +15,7 @@ class KafkaConsumer {
     _.defaults(this.configs, { fromOffset: 'latest' });
     _.defaults(this.configs, { outOfRangeOffset: 'latest' });
     _.defaults(this.configs, { fetchMaxBytes: 1024 * 1024 });
+    _.defaults(this.configs, { updateMetadata: 90 * 1000 });
   }
 
   validateConfigs() {
@@ -44,7 +45,7 @@ class KafkaConsumer {
         this.consumer.commit(msg, true);
       });
     });
-    setInterval(this.refreshMetadata.bind(this), this.sessionTimeout + 30000);
+    setInterval(this.refreshMetadata.bind(this), this.updateMetadata);
     logger.info('ConsumerGroupStream started');
   }
 

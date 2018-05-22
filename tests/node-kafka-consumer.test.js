@@ -68,7 +68,8 @@ describe('Kafka Consumer', () => {
     asyncPush: false,
     fromOffset: 'latest',
     outOfRangeOffset: 'latest',
-    fetchMaxBytes: 1024 * 1024
+    fetchMaxBytes: 1024 * 1024,
+    updateMetadata: 90000
   };
 
   const topics = ['Test'];
