@@ -11,7 +11,7 @@ class KafkaConsumer {
     this.configs.autoCommit = false;
     _.defaults(this.configs, { sessionTimeout: 15000 });
     _.defaults(this.configs, { protocol: ['roundrobin'] });
-    _.defaults(this.configs, { asyncPush: false });
+    _.defaults(this.configs, { asyncPush: true });
     _.defaults(this.configs, { fromOffset: 'latest' });
     _.defaults(this.configs, { outOfRangeOffset: 'latest' });
     _.defaults(this.configs, { fetchMaxBytes: 1024 * 1024 });
@@ -45,7 +45,7 @@ class KafkaConsumer {
         this.consumer.commit(msg, true);
       });
     });
-    setInterval(this.refreshMetadata.bind(this), this.updateMetadata);
+    setInterval(this.refreshMetadata.bind(this), this.configs.updateMetadata);
     logger.info('ConsumerGroupStream started');
   }
 

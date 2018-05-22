@@ -65,7 +65,7 @@ describe('Kafka Consumer', () => {
     autoCommit: false,
     sessionTimeout: 15000,
     protocol: ['roundrobin'],
-    asyncPush: false,
+    asyncPush: true,
     fromOffset: 'latest',
     outOfRangeOffset: 'latest',
     fetchMaxBytes: 1024 * 1024,
