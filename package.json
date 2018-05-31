@@ -1,8 +1,9 @@
 {
   "name": "quintoandar-kafka",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Default Kafka NodeJS lib for QuintoAndar",
   "main": "src/main.js",
+  "types": "types/index.d.ts",
   "dependencies": {
     "kafka-node": "git+https://github.com/thspinto/kafka-node.git#v2.6.2-rc1",
     "lodash": "^4.17.10",
@@ -10,16 +11,21 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
+    "@types/node": "^10.0.0",
     "EventEmitter": "^1.0.0",
     "eslint": "^4.7.2",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "2.8.0",
     "jest": "^21.2.1",
-    "jest-cli": "^22.0.3"
+    "jest-cli": "^22.0.3",
+    "tslint": "^5.10.0",
+    "tslint-config-semistandard": "^7.0.0",
+    "typescript": "^2.8.3"
   },
   "scripts": {
-    "test": "jest --config jest.config.json --coverage --forceExit",
-    "eslint": "eslint ./"
+    "test": "npm run eslint && jest --config jest.config.json --coverage --forceExit",
+    "eslint": "eslint ./ && npm run eslint:ts",
+    "eslint:ts": "tslint --project ./types/tsconfig.json --config ./types/tslint.json && tsc --project types"
   },
   "repository": {
     "type": "git",
