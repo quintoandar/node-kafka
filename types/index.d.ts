@@ -1,7 +1,7 @@
 import { Writable } from 'stream';
-import { ConsumerGroupOptions, KafkaClientOptions, HighLevelConsumerOptions } from 'kafka-node';
+import { ConsumerGroupOptions, KafkaClientOptions } from 'kafka-node';
 
-export { ConsumerGroupOptions, KafkaClientOptions, HighLevelConsumerOptions } from 'kafka-node';
+export { ConsumerGroupOptions, KafkaClientOptions } from 'kafka-node';
 
 export interface KafkaConsumerOptions {
     configs: ConsumerGroupOptions;
