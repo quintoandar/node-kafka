@@ -1,16 +1,17 @@
 {
   "name": "quintoandar-kafka",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Default Kafka NodeJS lib for QuintoAndar",
   "main": "src/main.js",
   "types": "types/index.d.ts",
   "dependencies": {
-    "kafka-node": "git+https://github.com/thspinto/kafka-node.git#v2.6.2-rc1",
+    "kafka-node": "2.6.1",
     "lodash": "^4.17.10",
     "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
+    "@types/kafka-node": "^2.0.6",
     "@types/node": "^10.0.0",
     "EventEmitter": "^1.0.0",
     "eslint": "^4.7.2",
