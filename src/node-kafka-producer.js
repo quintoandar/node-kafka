@@ -25,7 +25,7 @@ class KafkaProducer {
 
   init() {
     this.client = new kafka.KafkaClient(this.configs);
-    this.producer = new kafka.HighLevelProducer(this.client, this.configs);
+    this.producer = new kafka.HighLevelProducer(this.client);
     this.producer.on('error', logger.error);
     this.readyPromisse = new Promise((resolve) => {
       if (this.ready) {
@@ -44,7 +44,6 @@ class KafkaProducer {
       const payload = { topic: this.topic, messages: [msg] };
       this.readyPromisse.then(() => {
         this.producer.send([payload], (err, data) => {
-          logger.debug(data);
           if (err) {
             reject(err);
           } else {

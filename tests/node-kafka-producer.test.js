@@ -33,7 +33,6 @@ describe('Kafka Producer', () => {
   it('should configure corretly kafka lib', (done) => {
     const producer = new KafkaProducer({ configs, topic });
     expect(producer.client.configs).toEqual(fullConfigs);
-    expect(producer.producer.configs).toEqual(fullConfigs);
     expect(producer.producer.client).toBe(producer.client);
     done();
   });
