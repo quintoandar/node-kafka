@@ -13,3 +13,14 @@ export class KafkaConsumer {
 
     init(): void
 }
+
+export class KafkaProducerOptions {
+    configs: KafkaClientOptions;
+    topic: string;
+}
+
+export class KafkaProducer {
+    constructor(options: KafkaProducerOptions)
+
+    send(msg: string): Promise<string>;
+}
