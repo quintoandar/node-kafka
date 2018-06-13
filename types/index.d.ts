@@ -16,11 +16,10 @@ export class KafkaConsumer {
 
 export class KafkaProducerOptions {
     configs: KafkaClientOptions;
-    topic: string;
 }
 
 export class KafkaProducer {
     constructor(options: KafkaProducerOptions)
 
-    send(msg: string): Promise<string>;
+    send(topic: string, msg: string): Promise<string>;
 }

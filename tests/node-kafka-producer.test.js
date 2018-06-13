@@ -12,13 +12,6 @@ describe('Kafka Prducer Configs Validation', () => {
     }).toThrow('kafkaHost');
     done();
   });
-
-  it('should throw error when kafka topic is missing', (done) => {
-    expect(() => {
-      new KafkaProducer({ configs: { kafkaHost: 'localhost:9092' } });
-    }).toThrow('topic');
-    done();
-  });
 });
 
 describe('Kafka Producer', () => {
@@ -31,15 +24,15 @@ describe('Kafka Producer', () => {
   };
 
   it('should configure corretly kafka lib', (done) => {
-    const producer = new KafkaProducer({ configs, topic });
+    const producer = new KafkaProducer({ configs });
     expect(producer.client.configs).toEqual(fullConfigs);
     expect(producer.producer.client).toBe(producer.client);
     done();
   });
 
   it('should produce when ready', (done) => {
-    const producer = new KafkaProducer({ configs, topic });
-    producer.send(msg).then(() => {
+    const producer = new KafkaProducer({ configs });
+    producer.send(topic, msg).then(() => {
       expect(producer.producer.send.mock.calls[0][0]).toEqual([{
         topic,
         messages: [msg],
@@ -51,9 +44,9 @@ describe('Kafka Producer', () => {
   });
 
   it('should produce when ready', (done) => {
-    const producer = new KafkaProducer({ configs, topic });
+    const producer = new KafkaProducer({ configs });
     producer.producer.emit('ready');
-    producer.send(msg).then(() => {
+    producer.send(topic, msg).then(() => {
       expect(producer.producer.send.mock.calls[0][0]).toEqual([{
         topic,
         messages: [msg],
@@ -64,12 +57,12 @@ describe('Kafka Producer', () => {
   });
 
   it('should reject promise on error', (done) => {
-    const producer = new KafkaProducer({ configs, topic });
+    const producer = new KafkaProducer({ configs });
     producer.producer.emit('ready');
     producer.producer.send = jest.fn().mockImplementation((payload, cb) => {
       cb(new Error('some error'));
     });
-    producer.send(msg).catch((err) => {
+    producer.send(topic, msg).catch((err) => {
       expect(err).toEqual(new Error('some error'));
       done();
     });
