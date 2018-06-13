@@ -3,8 +3,7 @@ const logger = require('quintoandar-logger').getLogger(module);
 const _ = require('lodash');
 
 class KafkaProducer {
-  constructor({ configs, topic }) {
-    this.topic = topic;
+  constructor({ configs }) {
     this.configs = configs;
     this.ready = false;
     this.validateConfigs();
@@ -17,9 +16,6 @@ class KafkaProducer {
       !Object.prototype.hasOwnProperty.call(this.configs, expectedConf));
     if (missingConfigs.length > 0) {
       throw new Error(`Missing Producer Configs ${missingConfigs}`);
-    }
-    if (!this.topic) {
-      throw new Error('Missing param: topic');
     }
   }
 
@@ -39,9 +35,9 @@ class KafkaProducer {
     });
   }
 
-  send(msg) {
+  send(topic, msg) {
     const sendPromisse = new Promise((resolve, reject) => {
-      const payload = { topic: this.topic, messages: [msg] };
+      const payload = { topic, messages: [msg] };
       this.readyPromisse.then(() => {
         this.producer.send([payload], (err, data) => {
           if (err) {
