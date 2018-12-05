@@ -31,6 +31,7 @@ describe('Kafka Producer', () => {
 
   describe('send', () => {
     const msg = 'test';
+    const batchMsgs = ['test1', 'test2'];
 
     it('should produce when ready', (done) => {
       const producer = new KafkaProducer({ configs });
@@ -65,22 +66,9 @@ describe('Kafka Producer', () => {
         done();
       });
     });
-  });
-
-  describe('sendBatch', () => {
-    const batchMsgs = ['test1', 'test2'];
-
-    it('sendBatch should throw error if not using array', (done) => {
+    it('with array of messages, should produce when ready', (done) => {
       const producer = new KafkaProducer({ configs });
-      producer.producer.emit('ready');
-      expect(() => {
-        producer.sendBatch(topic, 'a string');
-      }).toThrow(Error);
-      done();
-    });
-    it('sendBatch should produce when ready', (done) => {
-      const producer = new KafkaProducer({ configs });
-      producer.sendBatch(topic, batchMsgs).then(() => {
+      producer.send(topic, batchMsgs).then(() => {
         expect(producer.producer.send.mock.calls[0][0]).toEqual([{
           topic,
           messages: batchMsgs,
@@ -89,10 +77,10 @@ describe('Kafka Producer', () => {
       });
       producer.producer.emit('ready');
     });
-    it('sendBatch should produce when ready', (done) => {
+    it('with array of messages, should produce when ready', (done) => {
       const producer = new KafkaProducer({ configs });
       producer.producer.emit('ready');
-      producer.sendBatch(topic, batchMsgs).then(() => {
+      producer.send(topic, batchMsgs).then(() => {
         expect(producer.producer.send.mock.calls[0][0]).toEqual([{
           topic,
           messages: batchMsgs,
@@ -100,13 +88,13 @@ describe('Kafka Producer', () => {
         done();
       });
     });
-    it('should reject promise on error', (done) => {
+    it('with array of messages, should reject promise on error', (done) => {
       const producer = new KafkaProducer({ configs });
       producer.producer.emit('ready');
       producer.producer.send = jest.fn().mockImplementation((payload, cb) => {
         cb(new Error('some error'));
       });
-      producer.sendBatch(topic, batchMsgs).catch((err) => {
+      producer.send(topic, batchMsgs).catch((err) => {
         expect(err).toEqual(new Error('some error'));
         done();
       });
