@@ -37,13 +37,17 @@ class KafkaProducer {
 
   send(topic, msg) {
     const sendPromisse = new Promise((resolve, reject) => {
-      const payload = { topic, messages: [msg] };
+      let payload;
+      if (Array.isArray(msg)) {
+        payload = { topic, messages: msg };
+      } else {
+        payload = { topic, messages: [msg] };
+      }
       this.readyPromisse.then(() => {
         this.producer.send([payload], (err, data) => {
           if (err) {
             reject(err);
           } else {
-            data.message = msg;
             resolve(data);
           }
         });
