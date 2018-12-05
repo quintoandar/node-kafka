@@ -5,9 +5,9 @@
   "main": "src/main.js",
   "types": "types/index.d.ts",
   "dependencies": {
-    "kafka-node": "2.6.1",
+    "kafka-node": "^3.0.1",
     "lodash": "^4.17.10",
-    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#1.0.0",
+    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#2.0.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

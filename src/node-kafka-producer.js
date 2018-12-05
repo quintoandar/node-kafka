@@ -43,7 +43,25 @@ class KafkaProducer {
           if (err) {
             reject(err);
           } else {
-            data.message = msg;
+            resolve(data);
+          }
+        });
+      });
+    });
+    return sendPromisse;
+  }
+
+  sendBatch(topic, msg) {
+    if (!Array.isArray(msg)) {
+      throw new Error('For sendBatch the second parameter should be an array of messages');
+    }
+    const sendPromisse = new Promise((resolve, reject) => {
+      const payload = { topic, messages: msg };
+      this.readyPromisse.then(() => {
+        this.producer.send([payload], (err, data) => {
+          if (err) {
+            reject(err);
+          } else {
             resolve(data);
           }
         });
