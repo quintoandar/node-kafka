@@ -26,7 +26,7 @@ class KafkaConsumer {
       throw new Error(`Missing Consumer Configs ${missingConfigs}`);
     }
     if (typeof this.handleMessageFn !== 'function') {
-      throw new Error('HandleMessageFn must be a fucntion');
+      throw new Error('HandleMessageFn must be a function');
     }
     if (this.topics && this.topics.constructor !== Array) {
       throw new Error('Topics must be an array');
@@ -43,8 +43,12 @@ class KafkaConsumer {
     this.consumer.on('data', (msg) => {
       this.handleMessageFn(msg).then(() => {
         this.consumer.commit(msg, true);
+      }).catch((err) => {
+        logger.error(`Consumer error on handleMessageFn: ${err}.
+          The following message was not committed: ${msg}`);
       });
     });
+
     setInterval(this.refreshMetadata.bind(this), this.configs.updateMetadata);
     logger.info('ConsumerGroupStream started');
   }
