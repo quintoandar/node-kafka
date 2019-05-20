@@ -44,8 +44,10 @@ class KafkaConsumer {
       this.handleMessageFn(msg).then(() => {
         this.consumer.commit(msg, true);
       }).catch((err) => {
-        logger.error(`Consumer error on handleMessageFn: ${err}.
-          The following message was not committed: ${msg}`);
+        logger.error(
+          'Consumer error on handleMessageFn: ', err,
+          'The following message was not committed: ', msg
+        );
       });
     });
 
