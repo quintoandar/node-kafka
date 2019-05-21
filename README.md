@@ -16,7 +16,7 @@ Standard node consumer/producer implementation for QuintoAndar.
 
 ## Examples
 
-See [exemples folder](/example)
+See [examples folder](/example)
 
 ## Configuration
 
