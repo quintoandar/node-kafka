@@ -36,7 +36,7 @@ class KafkaConsumer {
   init() {
     this.consumer = new kafka.ConsumerGroupStream(this.configs, this.topics);
     this.consumer.on('error', (err) => {
-      logger.error('node-kafka error: ', err);
+      logger.error('node-kafka error:', err);
       process.exit(1);
     });
 
@@ -45,8 +45,8 @@ class KafkaConsumer {
         this.consumer.commit(msg, true);
       }).catch((err) => {
         logger.error(
-          'Consumer error on handleMessageFn: ', err,
-          'The following message was not committed: ', msg
+          'The following message was not committed:', msg,
+          'Consumer error on handleMessageFn:', err
         );
       });
     });
@@ -60,7 +60,7 @@ class KafkaConsumer {
       this.consumer.consumerGroup.topics,
       (err) => {
         if (err) {
-          logger.warn('Refresh metadata error: ', err);
+          logger.warn('Refresh metadata error:', err);
           if (err.name === 'BrokerNotAvailableError') {
             this.consumer.close(() => {
               process.exit(1);
