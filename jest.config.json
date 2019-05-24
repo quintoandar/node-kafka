@@ -13,5 +13,6 @@
   },
   "testRegex": "tests/.*\\.test\\.js$",
   "resetModules": true,
-  "clearMocks": true
+  "clearMocks": true,
+  "testURL": "http://localhost/"
 }
