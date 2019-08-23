@@ -51,6 +51,10 @@ class KafkaConsumer {
     logger.info('ConsumerGroupStream started');
   }
 
+  onError(handler) {
+    this.consumer.on('error', handler);
+  }
+
   refreshMetadata() {
     this.consumer.consumerGroup.client.refreshMetadata(
       this.consumer.consumerGroup.topics,
