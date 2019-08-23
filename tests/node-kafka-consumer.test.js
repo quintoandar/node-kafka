@@ -104,11 +104,12 @@ describe('Kafka Consumer', () => {
 
   it('should throw error on error event', (done) => {
     const handleMessageFn = handleMessageMock(done);
+    const handleErrorFn = jest.fn();
     const consumer = new KafkaConsumer({ configs, topics, handleMessageFn });
-    global.process.exit = jest.fn();
     consumer.init();
+    consumer.onError(handleErrorFn);
     consumer.consumer.emit('error', 'error');
-    expect(global.process.exit).toHaveBeenCalledWith(1);
+    expect(handleErrorFn).toHaveBeenCalledWith('error');
     done();
   });
 });

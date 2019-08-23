@@ -37,7 +37,6 @@ class KafkaConsumer {
     this.consumer = new kafka.ConsumerGroupStream(this.configs, this.topics);
     this.consumer.on('error', (err) => {
       logger.error('node-kafka error:', err);
-      process.exit(1);
     });
 
     this.consumer.on('data', (msg) => {
@@ -50,6 +49,10 @@ class KafkaConsumer {
 
     setInterval(this.refreshMetadata.bind(this), this.configs.updateMetadata);
     logger.info('ConsumerGroupStream started');
+  }
+
+  onError(handler) {
+    this.consumer.on('error', handler);
   }
 
   refreshMetadata() {
