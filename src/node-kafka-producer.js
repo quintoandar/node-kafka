@@ -20,7 +20,7 @@ class KafkaProducer {
   }
 
   init() {
-    if (typeof (this.client) === 'undefined') {
+    if (typeof (this.client) !== 'undefined') {
       logger.info('Kafka producer had already been initialized. Skipping.');
       return;
     }

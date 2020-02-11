@@ -34,7 +34,7 @@ class KafkaConsumer {
   }
 
   init() {
-    if (typeof (this.consumer) === 'undefined') {
+    if (typeof (this.consumer) !== 'undefined') {
       logger.info('Kafka consumer had already been initialized. Skipping.');
       return;
     }
