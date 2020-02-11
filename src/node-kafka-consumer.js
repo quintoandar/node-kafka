@@ -34,6 +34,11 @@ class KafkaConsumer {
   }
 
   init() {
+    if(typeof(this.consumer) === 'undefined') {
+      logger.info('Kafka consumer had already been initialized. Skipping.');
+      return;
+    }
+
     this.consumer = new kafka.ConsumerGroupStream(this.configs, this.topics);
     this.consumer.on('error', (err) => {
       logger.error('node-kafka error:', err);
