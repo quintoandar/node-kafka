@@ -12,8 +12,10 @@ class KafkaProducer {
 
   validateConfigs() {
     const expectedConfigs = ['kafkaHost'];
-    const missingConfigs = _.filter(expectedConfigs, expectedConf =>
-      !Object.prototype.hasOwnProperty.call(this.configs, expectedConf));
+    const missingConfigs = _.filter(expectedConfigs, (expectedConf) => !Object
+      .prototype
+      .hasOwnProperty
+      .call(this.configs, expectedConf));
     if (missingConfigs.length > 0) {
       throw new Error(`Missing Producer Configs ${missingConfigs}`);
     }
