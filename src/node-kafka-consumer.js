@@ -20,8 +20,10 @@ class KafkaConsumer {
 
   validateConfigs() {
     const expectedConfigs = ['kafkaHost', 'groupId'];
-    const missingConfigs = _.filter(expectedConfigs, expectedConf =>
-      !Object.prototype.hasOwnProperty.call(this.configs, expectedConf));
+    const missingConfigs = _.filter(expectedConfigs, (expectedConf) => !Object
+      .prototype
+      .hasOwnProperty
+      .call(this.configs, expectedConf));
     if (missingConfigs.length > 0) {
       throw new Error(`Missing Consumer Configs ${missingConfigs}`);
     }
