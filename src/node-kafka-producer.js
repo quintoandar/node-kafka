@@ -12,14 +12,21 @@ class KafkaProducer {
 
   validateConfigs() {
     const expectedConfigs = ['kafkaHost'];
-    const missingConfigs = _.filter(expectedConfigs, expectedConf =>
-      !Object.prototype.hasOwnProperty.call(this.configs, expectedConf));
+    const missingConfigs = _.filter(expectedConfigs, (expectedConf) => !Object
+      .prototype
+      .hasOwnProperty
+      .call(this.configs, expectedConf));
     if (missingConfigs.length > 0) {
       throw new Error(`Missing Producer Configs ${missingConfigs}`);
     }
   }
 
   init() {
+    if (typeof (this.client) !== 'undefined') {
+      logger.info('Kafka producer had already been initialized. Skipping.');
+      return;
+    }
+
     this.client = new kafka.KafkaClient(this.configs);
     this.producer = new kafka.HighLevelProducer(this.client);
     this.producer.on('error', logger.error);
