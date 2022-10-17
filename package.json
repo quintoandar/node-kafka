@@ -7,8 +7,8 @@
   "dependencies": {
     "kafka-node": "^5.0.0",
     "lodash": "^4.17.21",
-    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#3.3.6",
-    "uuid": "^8.3.2"
+    "quintoandar-logger": "git+https://github.com/quintoandar/node-logger.git#3.3.61",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "eslint": "^8.2.0",
